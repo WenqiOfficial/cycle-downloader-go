@@ -41,6 +41,10 @@ jobs:
         uses: docker/metadata-action@v5.10.0
         with:
           images: ${{ steps.lower-repo.outputs.repository }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=tag
+            type=ref,event=branch
 
       - name: Build and push Docker image
         id: push
