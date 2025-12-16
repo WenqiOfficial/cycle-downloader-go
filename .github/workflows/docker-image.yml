@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}  
 
 jobs:
 
@@ -24,17 +24,22 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v5
 
+      - id: lower-repo
+        name: User to lowercase
+        run: |
+          echo "repository=${github.actor}" >> $GITHUB_OUTPUT
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3.6.0
         with:
-          username: ${{ github.actor }}
+          username: ${{ steps.lower-repo.outputs.repository }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.10.0
         with:
-          images: ${{ github.actor }}/${{ env.IMAGE_NAME }}
+          images: ${{ steps.lower-repo.outputs.repository }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         id: push
