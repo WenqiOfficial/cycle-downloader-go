@@ -1,4 +1,4 @@
-# Go-Cycle-Downloader
+# Cycle-Downloader-Go
 
 一个基于Go语言的轻量下行跑量工具
 
@@ -30,7 +30,7 @@
 
 ### Docker部署
 
-拉取 wenqiofficial/go-cycle-downloader 镜像并运行即可
+拉取 wenqiofficial/cycle-downloader-go 镜像并运行即可
 
 ## 注意
 
