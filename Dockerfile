@@ -17,10 +17,17 @@ RUN go build -o docker-cycler main.go
 
 FROM alpine
 
-WORKDIR /build
+WORKDIR /
 
-COPY --from=builder /build/docker-cycler /build/docker-cycler
+ENV TZ=Asia/Shanghai
 
-RUN chmod +x ./docker-cycler
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-CMD ["./docker-cycler"]
+RUN apk add tzdata && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone
+
+COPY --from=builder /build/docker-cycler /docker-cycler
+
+RUN chmod +x /docker-cycler
+
+CMD ["/docker-cycler"]
